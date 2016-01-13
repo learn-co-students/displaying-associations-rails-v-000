@@ -1,120 +1,151 @@
+# Displaying Associations Rails
+
 ## Objectives
 
-  1. Understand the conceot of AR Lifecycle methods
-  2. Use `before_save`, `before_create`, and `before_validation`
-  3. Understand when to use `before_validation` vs. `before_save`
+After this lesson, you should be able to...
 
-## Callbacks
+1. Create a `has_many` and `belongs_to` association.
+2. Build associated data through the console and `db/seeds.rb`.
+3. Query for associated data using methods provided by association.
+4. Embed association data within views.
+5. Iterate over associated data within a view displaying individual instances.
 
-Now that you are integrating ActiveRecord into Rails, we must first have a quick discussion about how developers can control the "lifecycle" of our object. This means that it can be nice to inject our code every time ActiveRecord does something to our model. There are a ton of different places we can inject our code. In this reading we are going to discuss the most common ones. Before we begin, some quick terminology. Everything we cover here are called "Active Record Lifecycle Callbacks". Many people just call them callbacks. It's a bit shorter.
+# Blog Categories
 
-Take a look at the blog app that is included. It's pretty simple. We have a `Post` model and a few views. The `Post` `belongs_to` an `Author`. Also in the `Post` model you'll notice a validation to make sure that post tiles are in title case. Title case means every word starts with a capital letter.
+In this lesson, we'll be setting up a blog admin panel so that Posts can be
+created, associated with Categories, and listed by category.
 
-While this validation is great, there is a method provided by Rails called `#titlecase` that will do this for us. I still want this validation, but let's make it so that just automatically before we save the record it runs `#titlecase`. What a convenience we are providing to our users! We are going to use our first callback, `before_save`. We use this similar to how you use `has_many` or `validates`. They are at the top of your model files. First let's write our method to actually run the `#titlecase` method.
+# The Models
 
-```ruby
-# posts.rb
-
-  def make_title_case
-    self.title = self.title.titlecase
-  end
-```
-
-Ok, now we want to run this whenever someone tries to save to the database. This is where the `before_save` comes:
+First, we'll set up associated models, just like in the preceding lesson:
 
 ```ruby
+# app/models/post.rb
+
 class Post < ActiveRecord::Base
-
-  belongs_to :author
-  validate :is_title_case 
-
-# New Code!!
-  before_save :make_title_case 
-
-  private
-
-  def is_title_case
-    if title.split.any?{|w|w[0].upcase != w[0]}
-      errors.add(:title, "Title must be in title case")
-    end
-  end
-
-  def make_title_case
-    self.title = self.title.titlecase
-  end
+  belongs_to :category
 end
 ```
 
-This shouldn't look too alien! Pretty much whenever you persist to the database (so `#save` and `#create`) this code will get run. Let's open up the console (`rails c`) and test it out:
-
 ```ruby
-p = Post.create(title: "testing")
-#   (0.1ms)  begin transaction
-#   (0.1ms)  rollback transaction
-# => #<Post id: nil, title: "testing", description: nil, created_at: nil, updated_at: nil, post_status: nil, author_id: nil>
-```
+# app/models/category.rb
 
-Wait! There was no `INSERT` SQL command issues. In fact, we see the `rollback transaction` line. That means that it didn't actually save to the database. If we do `p.valid?` right now it will return `false`. That's not right. We automatically title case things. The validation should pass! Then after reading much documentation, it turns out that the `before_save` is called **after** validation occurs. So it Rails goes `is valid?` nope! stop!. It never makes it to `before_save`. Let's change our callback to the `before_validation` callback. This one happens **before** validation. That means that first our `before_validation` code works, which title cases the title, *then* the validation runs, which passes! Here is the final code:
-
-```ruby
-class Post < ActiveRecord::Base
-
-  belongs_to :author
-  validate :is_title_case 
-
-# New Code!!
-  before_validation :make_title_case 
-
-  private
-
-  def is_title_case
-    if title.split.any?{|w|w[0].upcase != w[0]}
-      errors.add(:title, "Title must be in title case")
-    end
-  end
-
-  def make_title_case
-    self.title = self.title.titlecase
-  end
+class Category < ActiveRecord::Base
+  has_many :posts
 end
 ```
 
-Here is a rule of thumb: **Whenever you are modifing a attribute of the model, use `before_validation`. If you are doing some other action, then use `before_save`.**
+# Seed Data
 
-### Before Save
-
-Now let's do something that belongs in the `before_save`. We use `before_save` for actions that need to occur that aren't modifying the model itself. For example, whenever you save to the database, let's send an email to the Author alerting them that the post was just saved! 
-
-This is a perfect `before_save` action. It doesn't modify the model so there is no validation weirdness, and we don't want to email the user if the Post is invalid. That would be just mean! So if you had some method called `email_author_about_post` you would modify your `Post` model to look like this:
-
+Once you start working with more and more complicated data sets, you will realize that there is a lot of *stuff* you have to set up just to be able to play with your methods. The associations are so vast that you need to make many posts with many categories and all of that! How frustrating. What you are doing is called "seeding" the database. Pretty much putting in some test data so that you can play with your app. In Rails we set up our seed data in `db/seeds.rb`. Then we'll be able to just seed (or re-seed) the database with a quick `rake db:seed`.
 
 ```ruby
-class Post < ActiveRecord::Base
+# db/seeds.rb
 
-  belongs_to :author
-  validate :is_title_case 
+clickbait = Category.create!(name: "Motivation")
+clickbait.posts.create!(title: "10 Ways You Are Already Awesome")
+clickbait.posts.create!(title: "This Yoga Stretch Cures Procrastination, Maybe")
+clickbait.posts.create!(title: "The Power of Positive Thinking and 100 Gallons of Coffee")
 
-  before_validation :make_title_case 
-
-# New Code!!
-  before_save :email_author_about_post
-
-  private
-
-  def is_title_case
-    if title.split.any?{|w|w[0].upcase != w[0]}
-      errors.add(:title, "Title must be in title case")
-    end
-  end
-
-  def make_title_case
-    self.title = self.title.titlecase
-  end
-end
+movies = Category.create!(name: "Movies")
+movies.posts.create!(title: "Top 20 Summer Blockbusters Featuring a Cute Dog")
 ```
 
-### Before Create
+Woot! The best thing about the `seeds.rb` file is that it's just Ruby! There is no magic. Look, super standard Ruby. To run the seed file in the development environment, you can activate the rake
+task:
 
-Before you move on, let's cover one last callback that is super useful. This one is called `before_create`. `before_create` is very close to `before_save` with one major difference: it only gets called when a model is created for the first time. This means not every time the object is persisted, just when it is **new**. 
+```
+rake db:seed
+```
 
-For more information on all of the callback available to you, check out [this amazing rails guide](http://guides.rubyonrails.org/active_record_callbacks.html)
+If you want to play around with the data, of course, it's always possible to
+take the create statements exactly as written above and type them into `rails
+console`.
+
+# The Views
+
+## Posts
+
+When viewing a single post, we'll want to have a link to its category available.
+
+```erb
+<%# app/views/posts/show.html.erb %>
+
+<h2><%= @post.title %></h2>
+Category: <%= link_to @post.category, category_path(@post.category) %>
+<p><%= @post.description %></p>
+```
+
+`@post.category` is the `Category` model itself, so we can use it anywhere we
+would use `@category` on a view for that object.
+
+## Categories
+
+In this domain, the primary use of a category is as a bucket for posts. So we'll
+definitely have to make heavy use of associations when designing the view.
+
+```erb
+<%# app/views/categories/show.html.erb %>
+
+<h2><%= @category.name %></h2>
+<%= @category.posts.count %> post(s):
+<ul>
+  <% @category.posts.each do |post| %>
+    <li><%= link_to post.title, post_path(post) %></li>
+  <% end %>
+</ul>
+```
+
+The object returned by an association method (`posts` in this case) is a
+[CollectionProxy][collection_proxy], and it responds to most of the methods you
+can use on an array. Pretty much think of it like an array.
+
+If we open up `rails console`, we can confirm that the `count` results are
+accurate:
+
+```ruby
+Post.count
+#=> 4
+clickbait = Category.find_by(name: "Clickbait")
+#=> #<Category id=1>
+clickbait.posts.count
+#=> 3
+```
+
+Meanwhile, for listing a category's posts, we write a loop very similar to the
+loops we've been writing on `index` actions, which makes sense, since a category
+is essentially an index for its posts. Let's compare them side-by-side:
+
+```erb
+<%# app/views/categories/show.html.erb %>
+
+<% @category.posts.each do |post| %>
+  <li><%= link_to post.title, post_path(post) %></li>
+<% end %>
+```
+
+Versus:
+
+```erb
+<%# app/views/posts/index.html.erb %>
+
+<% @posts.each do |post| %>
+  <li><%= link_to post.title, post_path(post) %></li>
+<% end %>
+```
+
+In fact, the only difference is what we call `each` on.
+
+
+# Recap
+
+With ActiveRecord's powerful association macros and instance methods, we can
+treat related models exactly the same as we treat directly-accessed models. As
+long as the database and classes are set up correctly, ActiveRecord will figure
+the rest out for us!
+
+[collection_proxy]: http://edgeapi.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html
+
+
+<a href='https://learn.co/lessons/displaying-associations-rails'
+data-visibility='hidden'>View this lesson on Learn.co</a>
