@@ -3,6 +3,9 @@ require 'rails_helper'
 describe 'navigate' do
   before do
     @post = Post.create(title: "My Post", description: "My post desc")
+    @category = Category.create!(name: "The Dangers of Stairs")
+    @post.category = @category
+    @post.save
   end
 
   it 'shows the title on the show page in a h1 tag' do
@@ -25,10 +28,13 @@ describe 'form' do
 
   it 'shows an update form that submits content and redirects and prints out params' do
     @post = Post.create(title: "My Post", description: "My post desc")
+    @category = Category.create!(name: "The Dangers of Stairs")
+    @post.category = @category
+    @post.save
 
     visit edit_post_path(@post)
 
-    fill_in 'post[title]', with: "My edit"
+    fill_in 'post[title]', with: "My Edit"
     fill_in 'post[description]', with: "My post description"
 
     click_on "Update Post"
