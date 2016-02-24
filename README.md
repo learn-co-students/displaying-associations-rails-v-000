@@ -106,7 +106,7 @@ accurate:
 ```ruby
 Post.count
 #=> 4
-clickbait = Category.find_by(name: "Clickbait")
+clickbait = Category.find_by(name: "Motivation")
 #=> #<Category id=1>
 clickbait.posts.count
 #=> 3
@@ -149,3 +149,5 @@ the rest out for us!
 
 <a href='https://learn.co/lessons/displaying-associations-rails'
 data-visibility='hidden'>View this lesson on Learn.co</a>
+
+<p data-visibility='hidden'>View <a href='https://learn.co/lessons/displaying-associations-rails'>Displaying Associations Data</a> on Learn.co and start learning to code for free.</p>
