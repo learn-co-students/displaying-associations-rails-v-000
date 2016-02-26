@@ -2,10 +2,13 @@ require 'rails_helper'
 
 RSpec.describe CategoriesController, type: :controller do
 
+  before do
+    @category = Category.create!(name: "Going for a drive!")
+  end
+
   describe "GET #show" do
     it "returns http success" do
-      category = Category.create(name: "New Category")
-      get :show, id: category
+      get :show, id: @category
       expect(response).to have_http_status(:success)
     end
   end
