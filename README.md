@@ -72,7 +72,7 @@ When viewing a single post, we'll want to have a link to its category available.
 <%# app/views/posts/show.html.erb %>
 
 <h2><%= @post.title %></h2>
-Category: <%= link_to @post.category, category_path(@post.category) %>
+Category: <%= link_to @post.category.name, category_path(@post.category) %>
 <p><%= @post.description %></p>
 ```
 
