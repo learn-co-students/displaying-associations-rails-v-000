@@ -3,12 +3,9 @@ require 'rails_helper'
 describe 'navigate' do
   before do
     @post = Post.create(title: "My Post", description: "My post desc")
-    @clickbait = Category.create!(name: "Motivation")
-    @post.category = @clickbait
   end
 
   it 'shows the title on the show page in a h1 tag' do
-    binding.pry
     visit "/posts/#{@post.id}"
     expect(page).to have_css("h1", text: "My Post")
   end
