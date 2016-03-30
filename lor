@@ -1,0 +1,34 @@
+[31mF[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[32m.[0m[33m*[0m[32m.[0m[32m.[0m[32m.[0m[33m*[0m[33m*[0m
+
+Pending: (Failures listed here are expected and do not affect your suite's status)
+[33m
+  1) CategoriesHelper add some examples to (or delete) /Users/Nick/Development/displaying-associations-rails-v-000/spec/helpers/categories_helper_spec.rb[0m
+     [36m# Not yet implemented[0m
+[36m     # ./spec/helpers/categories_helper_spec.rb:14
+[0m[33m
+  2) Category add some examples to (or delete) /Users/Nick/Development/displaying-associations-rails-v-000/spec/models/category_spec.rb[0m
+     [36m# Not yet implemented[0m
+[36m     # ./spec/models/category_spec.rb:4
+[0m[33m
+  3) categories/show.html.erb add some examples to (or delete) /Users/Nick/Development/displaying-associations-rails-v-000/spec/views/categories/show.html.erb_spec.rb[0m
+     [36m# Not yet implemented[0m
+[36m     # ./spec/views/categories/show.html.erb_spec.rb:4
+[0m
+
+Failures:
+
+  1) CategoriesController GET #show returns http success
+     [31mFailure/Error: get :show, id: category[0m
+     [31m[0m
+     [31mActionView::MissingTemplate:[0m
+     [31m  Missing template categories/show, application/show with {:locale=>[:en], :formats=>[:html], :variants=>[], :handlers=>[:erb, :builder, :raw, :ruby, :coffee, :jbuilder]}. Searched in:[0m
+     [31m    * "#<RSpec::Rails::ViewRendering::EmptyTemplatePathSetDecorator:0x007fc9d81a28a0>"[0m
+     [36m# ./spec/controllers/categories_controller_spec.rb:8:in `block (3 levels) in <top (required)>'[0m
+
+Finished in 0.57548 seconds (files took 2.77 seconds to load)
+[31m12 examples, 1 failure, 3 pending[0m
+
+Failed examples:
+
+[31mrspec ./spec/controllers/categories_controller_spec.rb:6[0m [36m# CategoriesController GET #show returns http success[0m
+
