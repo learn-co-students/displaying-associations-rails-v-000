@@ -1,0 +1,7 @@
+<h2><%= @category.name %></h2>
+<%= @category.posts.count %> post(s):
+<ul>
+  <% @category.posts.each do |post| %>
+    <li><%= link_to post.title, post_path(post) %></li>
+  <% end %>
+</ul>
