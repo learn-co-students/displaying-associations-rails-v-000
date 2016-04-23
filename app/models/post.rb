@@ -1,7 +1,8 @@
 class Post < ActiveRecord::Base
+  belongs_to :category
 
-  validate :is_title_case 
-  before_validation :make_title_case 
+  validate :is_title_case
+  before_validation :make_title_case
   belongs_to :author
   belongs_to :category
 
