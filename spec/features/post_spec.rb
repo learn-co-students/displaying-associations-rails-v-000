@@ -3,10 +3,14 @@ require 'rails_helper'
 describe 'navigate' do
   before do
     @post = Post.create(title: "My Post", description: "My post desc")
+    Category.create(name: "My Category!")
+    @post.category = Category.all.first
+    @post.save
   end
 
   it 'shows the title on the show page in a h1 tag' do
     visit "/posts/#{@post.id}"
+
     expect(page).to have_css("h1", text: "My Post")
   end
 
@@ -25,7 +29,9 @@ describe 'form' do
 
   it 'shows an update form that submits content and redirects and prints out params' do
     @post = Post.create(title: "My Post", description: "My post desc")
-
+    Category.create(name: "My Category!")
+    @post.category = Category.all.first
+    @post.save
     visit edit_post_path(@post)
 
     fill_in 'post[title]', with: "My edit"
