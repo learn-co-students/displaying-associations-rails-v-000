@@ -1,0 +1,5 @@
+<h1><%= @author.name %></h1>
+<p><%= @author.genre %></p>
+<p><%= @author.bio %></p>
+<% @author.categories.each do |x| %>
+Category: <%= link_to x.name, category_path(x) %>

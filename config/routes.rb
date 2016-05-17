@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'categories/show'
+  resources :authors, only: [:index, :show, :new, :create, :edit, :update]
 
   resources :posts, only: [:index, :show, :new, :create, :edit, :update]
-  resources :categories
+  resources :categories, only: [:show]
 end
