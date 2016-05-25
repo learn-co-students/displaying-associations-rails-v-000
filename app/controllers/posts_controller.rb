@@ -4,11 +4,11 @@ class PostsController < ApplicationController
 	end
 
 	def show
-		@post = Post.find(params[:id])
+          @post = Post.includes(:category).find(params[:id])
 	end
 
 	def new
-		@post = Post.new
+	  @post = Post.new
 	end
 
 	def create
