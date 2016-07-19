@@ -1,2 +1,5 @@
 <h1><%= @post.title %></h1>
+<% unless @post.category.nil? %>
+  Category: <%= link_to @post.category.name, category_path(@post.category) %>
+<% end %>
 <p><%= @post.description %></p>
