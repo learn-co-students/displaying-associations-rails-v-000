@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'associations' do
+    it 'has many posts' do
+      expect(Category.all.first.posts.first).to eq(Post.find_by(title: "10 Ways You Are Already Awesome"))
+    end
+  end
 end
