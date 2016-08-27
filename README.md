@@ -67,12 +67,14 @@ When viewing a single post, we'll want to have a link to its category available.
 ```erb
 <!-- app/views/posts/show.html.erb -->
 
-<h2><%= @post.title %></h2>
-Category: <%= link_to @post.category.name, category_path(@post.category) %>
+<h1><%= @post.title %></h1>
+
+<h3>Category: <%= link_to @post.category.name, category_path(@post.category) if @post.category %></h3>
+
 <p><%= @post.description %></p>
 ```
 
-`@post.category` is the `Category` model itself, so we can use it anywhere we would use `@category` in a view for that object.
+`@post.category` is the `Category` model itself, so we can use it anywhere we would use `@category` in a view for that object. Also note that we added the `if @post.category` conditional to ensure that the view doesn't try to call `@post.category.name` if the post has not been associated with a category.
 
 ## Categories
 
@@ -81,36 +83,41 @@ In this domain, the primary use of a category is as a bucket for posts, so we'll
 ```erb
 <!-- app/views/categories/show.html.erb -->
 
-<h2><%= @category.name %></h2>
-<%= @category.posts.count %> post(s):
+<h1><%= @category.name %></h1>
+
+<h3><%= @category.posts.count %> Post(s):</h3>
 <ul>
-  <% @category.posts.each do |post| %>
-    <li><%= link_to post.title, post_path(post) %></li>
+  <% @category.posts.each do |p| %>
+    <li><%= link_to p.title, post_path(p) %></li>
   <% end %>
 </ul>
 ```
 
-The object returned by an association method (`posts` in this case) is a [CollectionProxy][collection_proxy], and it responds to most of the methods you can use on an array. Pretty much think of it like an array.
+The object returned by an association method (`posts` in this case) is a [CollectionProxy][collection_proxy], and it responds to most of the methods you can use on an array. Think of it like an array.
 
 If we open up `rails console`, we can confirm that the `count` results are accurate:
 
 ```shell
 Post.count
-#=> 4
+ => 4
 clickbait = Category.find_by(name: "Motivation")
-#=> #<Category id=1>
+ => #<Category id: 1, ...>
 clickbait.posts.count
-#=> 3
+ => 3
 ```
 
-Meanwhile, for listing a category's posts, we write a loop very similar to the loops we've been writing in `index` actions, which makes sense since a category is essentially an index of its posts. Let's compare them side-by-side:
+Meanwhile, for listing a category's posts, we wrote a loop very similar to the loops we've been writing in `index` actions, which makes sense since a category is essentially an index of its posts. Let's compare them side-by-side:
 
 ```erb
 <!-- app/views/categories/show.html.erb -->
 
-<% @category.posts.each do |post| %>
-  <li><%= link_to post.title, post_path(post) %></li>
+...
+
+<% @category.posts.each do |p| %>
+  <li><%= link_to p.title, post_path(p) %></li>
 <% end %>
+
+...
 ```
 
 Versus:
@@ -118,9 +125,13 @@ Versus:
 ```erb
 <!-- app/views/posts/index.html.erb -->
 
-<% @posts.each do |post| %>
-  <li><%= link_to post.title, post_path(post) %></li>
+...
+
+<% @posts.each do |p| %>
+  <li><%= link_to p.title, post_path(p) %></li>
 <% end %>
+
+...
 ```
 
 In fact, the only difference is what we call `each` on.
