@@ -85,7 +85,7 @@ In this domain, the primary use of a category is as a bucket for posts, so we'll
 
 <h1><%= @category.name %></h1>
 
-<h3><%= @category.posts.count %> Post(s):</h3>
+<h3><%= pluralize(@category.posts.count, 'Post') %></h3>
 <ul>
   <% @category.posts.each do |p| %>
     <li><%= link_to p.title, post_path(p) %></li>
