@@ -1,9 +1,22 @@
+<h1>Edit Post</h1>
+
 <%= form_for(@post) do |f| %>
-  <label>Post title:</label><br>
-  <%= f.text_field :title %><br>
+  <div class="field">
+    <label>Post Title:</label><br>
+    <%= f.text_field :title %><br>
+  </div>
 
-  <label>Post Description</label><br>
-  <%= f.text_area :description %><br>
+  <div class="field">
+    <label>Post Description:</label><br>
+    <%= f.text_area :description %><br>
+  </div>
 
-  <%= f.submit %>
+  <div class="field">
+    <label><%= 'Post Category:' if !@categories.empty? %></label></br>
+    <%= f.collection_radio_buttons :category_id, @categories, :id, :name %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 <% end %>
