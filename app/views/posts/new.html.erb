@@ -2,17 +2,17 @@
 
 <%= form_for(@post) do |f| %>
   <div class="field">
-    <label>Post Title:</label><br>
-    <%= f.text_field :title %><br>
+    <%= f.label :title, 'Post Title:' %><br>
+    <%= f.text_field :title %>
   </div>
 
   <div class="field">
-    <label>Post Description:</label><br>
-    <%= f.text_area :description %><br>
+    <%= f.label :description, 'Post Description:' %><br>
+    <%= f.text_area :description %>
   </div>
 
   <div class="field">
-    <label><%= 'Post Category:' if !@categories.empty? %></label><br>
+    <%= f.label :category_id, 'Post Category:' %><br>
     <%= f.collection_radio_buttons :category_id, @categories, :id, :name %>
   </div>
 
