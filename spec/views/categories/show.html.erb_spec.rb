@@ -6,8 +6,8 @@ RSpec.describe "categories/show", type: :feature do
     expect(page).to have_css("h1", text: "My Category")
   end
 
-  it "shows the category's posts on the show page in <li> tags" do
+  it "contains links to the category's posts" do
     visit category_path(@category)
-    expect(page).to have_css("li", text: "My Post")
+    expect(page).to have_link(@post.title, href: post_path(@post))
   end
 end
