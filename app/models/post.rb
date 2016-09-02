@@ -1,7 +1,7 @@
 class Post < ActiveRecord::Base
 
-  validate :is_title_case 
-  before_validation :make_title_case 
+  validate :is_title_case
+  before_validation :make_title_case
   belongs_to :author
   belongs_to :category
 
@@ -14,6 +14,7 @@ class Post < ActiveRecord::Base
   end
 
   def make_title_case
+    # binding.pry
     self.title = self.title.titlecase
   end
 end
