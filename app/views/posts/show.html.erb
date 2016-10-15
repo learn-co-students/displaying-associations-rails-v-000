@@ -1,2 +1,4 @@
-<h1><%= @post.title %></h1>
+<%# app/views/posts/show.html.erb %>
+<h2><%= @post.title %></h2>
+Category: <%= link_to @post.category.name, category_path(@post.category) %>
 <p><%= @post.description %></p>
