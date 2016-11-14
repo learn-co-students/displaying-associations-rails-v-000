@@ -1,9 +1,22 @@
+<h1>New Post</h1>
+
 <%= form_for(@post) do |f| %>
-  <label>Post title:</label><br>
-  <%= f.text_field :title %><br>
+  <div class="field">
+    <%= f.label :title, 'Post Title:' %><br>
+    <%= f.text_field :title %>
+  </div>
 
-  <label>Post Description</label><br>
-  <%= f.text_area :description %><br>
+  <div class="field">
+    <%= f.label :description, 'Post Description:' %><br>
+    <%= f.text_area :description %>
+  </div>
 
-  <%= f.submit %>
+  <div class="field">
+    <%= f.label :category_id, 'Post Category:' %><br>
+    <%= f.collection_radio_buttons :category_id, @categories, :id, :name %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
 <% end %>

@@ -52,6 +52,11 @@ RSpec.configure do |config|
     DatabaseCleaner.start
   end
 
+  config.before(:each) do
+    @category = Category.create(name: 'My Category')
+    @post = @category.posts.create(title: 'My Post', description: 'My post desc')
+  end
+
   config.after(:each) do
     DatabaseCleaner.clean
   end
