@@ -12,7 +12,7 @@ After this lesson, you should be able to...
 
 # Blog Categories
 
-In this lesson, we'll be setting up a blog admin panel so that Posts can be created, associated with Categories, and listed by category.
+In this lesson, we'll be setting up a blog admin panel so that `Post` objects can be created, associated with `Category` objects, and listed by `Category`.
 
 # The Models
 
@@ -52,7 +52,7 @@ movies.posts.create!(title: "Top 20 Summer Blockbusters Featuring a Cute Dog")
 
 Woot! The best thing about the `seeds.rb` file is that it's just Ruby! There is no magic. Look, super standard Ruby. To run the seed file in the development environment, you can activate the rake task:
 
-```
+```bash
 rake db:seed
 ```
 
@@ -65,63 +65,73 @@ If you want to play around with the data, of course, it's always possible to tak
 When viewing a single post, we'll want to have a link to its category available.
 
 ```erb
-<%# app/views/posts/show.html.erb %>
+<!-- app/views/posts/show.html.erb -->
 
-<h2><%= @post.title %></h2>
-Category: <%= link_to @post.category.name, category_path(@post.category) %>
+<h1><%= @post.title %></h1>
+
+<h3>Category: <%= link_to @post.category.name, category_path(@post.category) if @post.category %></h3>
+
 <p><%= @post.description %></p>
 ```
 
-`@post.category` is the `Category` model itself, so we can use it anywhere we would use `@category` on a view for that object.
+`@post.category` is the `Category` model itself, so we can use it anywhere we would use `@category` in a view for that object. Also note that we added the `if @post.category` conditional to ensure that the view doesn't try to call `@post.category.name` if the post has not been associated with a category.
 
 ## Categories
 
-In this domain, the primary use of a category is as a bucket for posts. So we'll definitely have to make heavy use of associations when designing the view.
+In this domain, the primary use of a category is as a bucket for posts, so we'll definitely have to make heavy use of associations when designing the view.
 
 ```erb
-<%# app/views/categories/show.html.erb %>
+<!-- app/views/categories/show.html.erb -->
 
-<h2><%= @category.name %></h2>
-<%= @category.posts.count %> post(s):
+<h1><%= @category.name %></h1>
+
+<h3><%= pluralize(@category.posts.count, 'Post') %></h3>
 <ul>
-  <% @category.posts.each do |post| %>
-    <li><%= link_to post.title, post_path(post) %></li>
+  <% @category.posts.each do |p| %>
+    <li><%= link_to p.title, post_path(p) %></li>
   <% end %>
 </ul>
 ```
 
-The object returned by an association method (`posts` in this case) is a [CollectionProxy][collection_proxy], and it responds to most of the methods you can use on an array. Pretty much think of it like an array.
+The object returned by an association method (`posts` in this case) is a [CollectionProxy][collection_proxy], and it responds to most of the methods you can use on an array. Think of it like an array.
 
-If we open up `rails console`, we can confirm that the `count` results are
-accurate:
+If we open up `rails console`, we can confirm that the `count` results are accurate:
 
-```ruby
+```shell
 Post.count
-#=> 4
+ => 4
 clickbait = Category.find_by(name: "Motivation")
-#=> #<Category id=1>
+ => #<Category id: 1, ...>
 clickbait.posts.count
-#=> 3
+ => 3
 ```
 
-Meanwhile, for listing a category's posts, we write a loop very similar to the loops we've been writing on `index` actions, which makes sense, since a category is essentially an index for its posts. Let's compare them side-by-side:
+Meanwhile, for listing a category's posts, we wrote a loop very similar to the loops we've been writing in `index` actions, which makes sense since a category is essentially an index of its posts. Let's compare them side-by-side:
 
 ```erb
-<%# app/views/categories/show.html.erb %>
+<!-- app/views/categories/show.html.erb -->
 
-<% @category.posts.each do |post| %>
-  <li><%= link_to post.title, post_path(post) %></li>
+...
+
+<% @category.posts.each do |p| %>
+  <li><%= link_to p.title, post_path(p) %></li>
 <% end %>
+
+...
 ```
 
 Versus:
 
 ```erb
-<%# app/views/posts/index.html.erb %>
+<!-- app/views/posts/index.html.erb -->
 
-<% @posts.each do |post| %>
-  <li><%= link_to post.title, post_path(post) %></li>
+...
+
+<% @posts.each do |p| %>
+  <li><%= link_to p.title, post_path(p) %></li>
 <% end %>
+
+...
 ```
 
 In fact, the only difference is what we call `each` on.
@@ -129,10 +139,8 @@ In fact, the only difference is what we call `each` on.
 
 # Recap
 
-With ActiveRecord's powerful association macros and instance methods, we can treat related models exactly the same as we treat directly-accessed models. As long as the database and classes are set up correctly, ActiveRecord will figure the rest out for us!
+With Active Record's powerful association macros and instance methods, we can treat related models exactly the same as we treat directly-accessed models. As long as the database and classes are set up correctly, Active Record will figure the rest out for us!
 
 [collection_proxy]: http://edgeapi.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html
-
-
 
 <p data-visibility='hidden'>View <a href='https://learn.co/lessons/displaying-associations-rails'>Displaying Associations Data</a> on Learn.co and start learning to code for free.</p>
