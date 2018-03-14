@@ -3,3 +3,13 @@
 <!-- Add code here to link to the post's category. -->
 
 <p><%= @post.description %></p>
+
+
+
+<!-- Add code here to list a category's posts. -->
+
+<ul>
+  <% Category.all.each do |c| %>
+  <li><%= link_to c.name, category_path(c) if @post.category_id == c.id %></li>
+  <% end %>
+</ul>
