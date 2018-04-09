@@ -1,8 +1,16 @@
 <h1><%= @category.name %></h1>
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 10464d314af1a29199dc221df286076cdb746637
 <h3><%= pluralize(@category.posts.count, 'Post') %></h3>
 <ul>
   <% @category.posts.each do |p| %>
     <li><%= link_to p.title, post_path(p) %></li>
   <% end %>
+<<<<<<< HEAD
 </ul>
+=======
+</ul>
+>>>>>>> 10464d314af1a29199dc221df286076cdb746637
