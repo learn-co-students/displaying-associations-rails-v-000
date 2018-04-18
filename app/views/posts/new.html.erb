@@ -1,22 +1,48 @@
+<!--
+4/18/18
+Naomi J. Dennis
+Flatiron School
+Full Stack Web Devleopment Online Program
+***************************************************
+Proposed fixes to Forms and Basic Association Readme.
+Link to Readme:
+https://learn.co/tracks/full-stack-web-development-v5/rails/associations-and-rails/forms-and-basic-association#fullscreen
+
+ -->
 <h1>New Post</h1>
 
-<%= form_for(@post) do |f| %>
-  <div class="field">
-    <%= f.label :title, 'Post Title:' %><br>
-    <%= f.text_field :title %>
-  </div>
+<%= form_for @post do |f| %>
+<!-- The first category selection. This form contains no error.
+     Note: :content is changed to :description to match with the database in this project.
+-->
+  <!--
+  <%= f.label :category_name %>
+  <%= f.text_field :category_name %>
+  <br/>
+  Description
+  <%= f.text_field :description %>
+  -->
 
-  <div class="field">
-    <%= f.label :description, 'Post Description:' %><br>
-    <%= f.text_area :description %>
-  </div>
 
-  <div class="field">
-    <%= f.label :category_id, 'Post Category:' %><br>
-    <%= f.collection_radio_buttons :category_id, @categories, :id, :name %>
-  </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<!-- The second category selection. This form contains errors. :category should be :category_name-->
+<!--
+  <%= f.collection_select :category, Category.all, :id, :name %>
+  <%= f.text_field :description %>
+-->
+
+
+
+<!-- The second category selection with the fix applied. :category is now :category_name.
+     I also changed :id to :name so the category name property is passed to the ruby code instead of the id since this what
+     the category_name overloader checks.
+-->
+<!--
+  <%= f.collection_select :category_name, Category.all, :name, :name %>
+  <%= f.text_field :description %>
+-->
+
+
+  <%= f.submit %>
+
 <% end %>
