@@ -76,7 +76,7 @@ When viewing a single post, we'll want to have a link to its category available.
 
 `@post.category` is the `Category` model itself, so we can use it anywhere we would use `@category` in a view for that object. Also note that we added the `if @post.category` conditional to ensure that the view doesn't try to call `@post.category.name` if the post has not been associated with a category.
 
-## Categories
+## Categories  **this is where you are at
 
 In this domain, the primary use of a category is as a bucket for posts, so we'll definitely have to make heavy use of associations when designing the view.
 
