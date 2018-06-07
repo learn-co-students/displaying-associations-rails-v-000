@@ -2,4 +2,6 @@
 
 <!-- Add code here to link to the post's category. -->
 
+<h3>Category: <%= link_to @post.category.name, category_path(@post.category) if @post.category %></h3>
+
 <p><%= @post.description %></p>
