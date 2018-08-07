@@ -5,6 +5,7 @@ class PostsController < ApplicationController
 
 	def show
 		@post = Post.find(params[:id])
+		@category = @post.category
 	end
 
 	def new
