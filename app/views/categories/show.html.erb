@@ -1,3 +1,24 @@
 <h1><%= @category.name %></h1>
 
-<!-- Add code here to list a category's posts. -->
+<div class="table">
+  <table cellspacing='10'>
+    <thead>
+      <tr>
+        <th>Post Title</th>
+        <th>Post Description</th>
+        <th>Post's Author</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+      <% @category_posts.each do |post| %>
+        <tr>
+          <td><%= post.title %></td>
+          <td><%= post.description %></td>
+          <td><%= post.author %></td>
+          <td><%= link_to post.title, post_path(post) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
