@@ -1,5 +1,7 @@
 <h1><%= @post.title %></h1>
 
-<!-- Add code here to link to the post's category. -->
+<% @posts.each do |p| %>
+  <li><%= link_to p.title, post_path(p) %></li>
+<% end %>
 
 <p><%= @post.description %></p>
