@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CategoriesController, type: :controller do
   describe "GET #show" do
     it "returns HTTP success" do
-      get :show, id: @category
+      get :show, params[:id]: @category
       expect(response).to have_http_status(:success)
     end
   end
