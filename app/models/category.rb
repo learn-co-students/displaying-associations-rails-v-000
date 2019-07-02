@@ -1,2 +1,3 @@
 class Category < ActiveRecord::Base
-end
+    has_many :posts
+  end
