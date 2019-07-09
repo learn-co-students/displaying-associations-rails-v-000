@@ -22,7 +22,9 @@ class CategoriesController < ApplicationController
 
   def update
     category = Category.find(params[:id])
-    category.update(params.require(:category))
+    category.update(params.require(:category).permit!)
+    #added .permit!
+		#https://github.com/learn-co-curriculum/displaying-associations-rails/issues/14
     redirect_to category_path(category)
   end
 end
