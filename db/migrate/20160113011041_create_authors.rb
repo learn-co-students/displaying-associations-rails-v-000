@@ -4,7 +4,6 @@ class CreateAuthors < ActiveRecord::Migration
       t.string :name
       t.string :genre
       t.text :bio
-
       t.timestamps null: false
     end
   end
