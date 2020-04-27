@@ -1,3 +1,8 @@
 <h1><%= @category.name %></h1>
 
-<!-- Add code here to list a category's posts. -->
+<h3><%= pluralize(@category.posts.count, 'Post') %></h3>
+<ul>
+<% @category.posts.each do |x| %>
+    <li><%= link_to x.title, post_path(x) %></li>
+<% end %>
+</ul>
