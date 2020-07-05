@@ -142,6 +142,3 @@ In fact, the only difference is what we call `each` on.
 With Active Record's powerful association macros and instance methods, we can treat related models exactly the same as we treat directly-accessed models. As long as the database and classes are set up correctly, Active Record will figure the rest out for us!
 
 [collection_proxy]: http://edgeapi.rubyonrails.org/classes/ActiveRecord/Associations/CollectionProxy.html
-
-<p class='util--hide'>View <a href='https://learn.co/lessons/displaying-associations-rails'>Displaying Associations Data</a> on Learn.co and start learning to code for free.</p>
-
