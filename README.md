@@ -10,11 +10,11 @@ After this lesson, you should be able to...
 4. Embed association data within views.
 5. Iterate over associated data within a view displaying individual instances.
 
-# Blog Categories
+## Blog Categories
 
 In this lesson, we'll be setting up a blog admin panel so that `Post` objects can be created, associated with `Category` objects, and listed by `Category`.
 
-# The Models
+## The Models
 
 First, we'll set up associated models, just like in the preceding lesson:
 
@@ -34,7 +34,7 @@ class Category < ActiveRecord::Base
 end
 ```
 
-# Seed Data
+## Seed Data
 
 Once you start working with more and more complicated data sets, you will realize that there is a lot of *stuff* you have to set up just to be able to play with your methods. The associations are so vast that you need to make many posts with many categories and all of that! How frustrating. What you are doing is called "seeding" the database. Pretty much putting in some test data so that you can play with your app. In Rails we set up our seed data in `db/seeds.rb`. Then we'll be able to just seed (or re-seed) the database with a quick `rake db:seed`.
 
@@ -58,9 +58,9 @@ rake db:seed
 
 If you want to play around with the data, of course, it's always possible to take the create statements exactly as written above and type them into `rails console`.
 
-# The Views
+## The Views
 
-## Posts
+### Posts
 
 When viewing a single post, we'll want to have a link to its category available.
 
@@ -76,7 +76,7 @@ When viewing a single post, we'll want to have a link to its category available.
 
 `@post.category` is the `Category` model itself, so we can use it anywhere we would use `@category` in a view for that object. Also note that we added the `if @post.category` conditional to ensure that the view doesn't try to call `@post.category.name` if the post has not been associated with a category.
 
-## Categories
+### Categories
 
 In this domain, the primary use of a category is as a bucket for posts, so we'll definitely have to make heavy use of associations when designing the view.
 
@@ -137,7 +137,7 @@ Versus:
 In fact, the only difference is what we call `each` on.
 
 
-# Recap
+## Recap
 
 With Active Record's powerful association macros and instance methods, we can treat related models exactly the same as we treat directly-accessed models. As long as the database and classes are set up correctly, Active Record will figure the rest out for us!
 
